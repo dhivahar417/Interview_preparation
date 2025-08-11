@@ -1,0 +1,74 @@
+React Intermediate & Advanced Interview Questions
+Intermediate React Questions
+Core React Concepts
+1. Explain the Virtual DOM and how React’s reconciliation algorithm works.
+2. What are the differences between controlled and uncontrolled components?
+3. How does React handle events compared to vanilla JavaScript?
+4. What are keys in React, and why are they important?
+5. Explain the component lifecycle in class components (and hooks equivalents in 
+functional components).
+6. What are Higher-Order Components (HOCs)? Provide an example.
+7. How do you optimize React component rendering? (React.memo, useMemo, 
+useCallback)
+State Management
+8. When should you use useState vs useReducer?
+9. How does React Context work, and when should you avoid it?
+10. Implement a custom hook for fetching data (useFetch).
+11. Compare Redux, Zustand, and React Context for state management.
+12. How would you handle global state without Redux?
+Hooks
+13. Explain the rules of hooks and why they exist.
+14. How does useEffect dependency array work?
+15. Write a custom usePrevious hook to track previous state.
+16. How would you implement useDebounce or useThrottle?
+17. What is the difference between useMemo and useCallback?
+Performance Optimization
+18. How does code splitting work in React? (React.lazy, Suspense)
+19. What is the purpose of React.Fragment?
+20. How would you debug performance issues in a React app?
+21. Explain how React.memo works and when to use it.
+---------------------------------------------------------------------------------
+Advanced React Questions
+Deep Dive into React
+22. Explain how React Fiber improves rendering performance.
+23. What is "render prop" pattern? Compare it with Hooks.
+24. How does React handle server-side rendering (SSR) and hydration?
+25. What are Error Boundaries, and how do you implement them?
+26. Explain concurrent features in React (useTransition, useDeferredValue).
+State Management & Advanced Patterns
+27. Implement a Redux-like store using useReducer and useContext.
+28. How would you handle authentication state in a large React app?
+29. What is the "Compound Components" pattern? Provide an example.
+30. How does React Query simplify data fetching compared to Redux?
+Hooks Deep Dive
+31. How would you implement a useInterval hook?
+32. Create a useLocalStorage hook to persist state.
+33. Explain how useLayoutEffect differs from useEffect.
+34. Write a useClickOutside hook to detect clicks outside a component.
+Performance & Optimization
+35. How does React’s reconciliation algorithm minimize re-renders?
+36. What is "windowing" or "virtualization" in React? (react-window, react-virtualized)
+37. How would you optimize a large list rendering in React?
+38. Explain how React.memo works under the hood.
+Testing & Debugging
+39. How do you test React components using Jest and React Testing Library?
+40. What are some common pitfalls when testing hooks?
+41. How would you debug a memory leak in a React app?
+React + TypeScript
+42. How do you properly type React props, hooks, and events in TypeScript?
+43. What are discriminated unions in React with TypeScript?
+44. How would you type a generic component in React?
+React Architecture & Best Practices
+45. How do you structure a large-scale React application?
+46. What are some common anti-patterns in React?
+47. How would you implement feature flags in React?
+48. Explain micro-frontends and how React fits into this architecture.
+Algorithmic & Problem-Solving
+49. Implement a drag-and-drop list with React DnD.
+50. Create a reusable infinite scroll component.
+51. Write a custom hook for handling form validation.
+52. Implement a debounced search input with API calls.
+Bonus: System Design with React
+53. How would you design a real-time chat app with React?
+54. What strategies would you use for offline-first React apps?
+55. How do you handle API rate limiting in a React frontend?

@@ -1,0 +1,55 @@
+React Native Intermediate & Advanced Interview Questions
+Beginner React Native Questions
+Core Concepts
+1. What is React Native and how is it different from React?
+2. What are components in React Native?
+3. What is the difference between View, Text, and Image in React Native?
+4. How do you apply styling in React Native?
+5. What is the use of StyleSheet.create()?
+6. What are props and state in React Native?
+7. What are the lifecycle methods of a class component?
+8. How do you handle button presses or touch events?
+9. How do you navigate between screens in React Native?
+10. How to handle forms and text inputs in React Native?
+Intermediate React Native Questions
+Lists, Layouts & Performance
+11. Difference between FlatList, ScrollView, and SectionList
+12. How do you optimize performance in large lists?
+13. How do you handle different screen sizes and pixel densities?
+State Management & Side Effects
+14. Difference between useState and setState
+15. What are controlled vs uncontrolled components?
+16. Explain useEffect and its cleanup behavior
+17. How do you use async/await with useEffect?
+Debugging & Navigation
+18. What is the difference between React Navigation and React Native Navigation?
+19. How do you debug a React Native app?
+Advanced React Native Questions
+Native Interfacing & Runtime
+20. What is the React Native bridge?
+21. How do native modules work in React Native?
+22. What is JSI (JavaScript Interface)?
+23. How does Hermes improve React Native performance?
+Optimization & Performance
+24. What are performance bottlenecks in React Native and how do you solve them?
+25. How do you implement background tasks in React Native?
+26. What are memory leaks and how do you avoid them?
+27. How do you handle deep linking in React Native?
+Animation & Advanced State
+28. Explain gesture handling and animations using react-native-reanimated
+29. How would you integrate react-query or redux-toolkit in a React Native setup?
+Core Architecture & Rendering
+30. What is Fabric in React Native and how does it work?
+31. What is concurrent rendering and how does it affect React Native?
+32. What is TurboModules and how does it enhance performance?
+App Architecture & Patterns
+33. How would you structure a large-scale React Native application?
+34. How would you design a cross-platform architecture (Android, iOS, Web) using 
+React Native?
+35. How would you architect a scalable navigation system?
+36. What is the MVVM pattern and how would you apply it in a React Native app?
+Tooling & Infrastructure
+37. How do you implement feature flagging in a React Native application?
+38. How do you handle environment-specific configurations in a mobile app?
+39. What are the benefits and challenges of using monorepos in React Native 
+projects?
