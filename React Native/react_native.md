@@ -153,11 +153,9 @@ Components are reusable pieces of UI that can be composed together. In React Nat
 - Hardcoding sizes can make your app look **broken or clipped** on some devices.
 - Goal: **responsive and adaptive UI** across phones and tablets.
 
----
+**2. Techniques to handle different screen sizes**
 
-## **2. Techniques to handle different screen sizes**
-
-### **A. Flexbox Layout**
+**A. Flexbox Layout**
 
 - React Native uses Flexbox by default for layout.
 - Use `flex`, `justifyContent`, `alignItems` to adapt to different screen sizes.
@@ -168,9 +166,7 @@ Components are reusable pieces of UI that can be composed together. In React Nat
 </View>
 ```
 
----
-
-### **B. Percentage-based Width / Height**
+**B. Percentage-based Width / Height**
 
 - Avoid fixed pixel sizes; use percentages instead.
 
@@ -178,9 +174,7 @@ Components are reusable pieces of UI that can be composed together. In React Nat
 <View style={{ width: "80%", height: "50%" }} />
 ```
 
----
-
-### **C. Dimensions API**
+**C. Dimensions API**
 
 - Get device width and height dynamically.
 
@@ -193,9 +187,7 @@ console.log("Screen width:", width, "Height:", height);
 
 - Can adjust component sizes based on `width` and `height`.
 
----
-
-### **D. Platform-Specific Styles**
+**D. Platform-Specific Styles**
 
 - Use `Platform` API for iOS vs Android adjustments.
 
@@ -209,9 +201,7 @@ const styles = StyleSheet.create({
 });
 ```
 
----
-
-### **E. SafeAreaView**
+**E. SafeAreaView**
 
 - Handles devices with **notches or rounded corners**.
 
@@ -223,9 +213,7 @@ import { SafeAreaView } from "react-native";
 </SafeAreaView>;
 ```
 
----
-
-### **F. Third-Party Libraries for Responsiveness**
+**F. Third-Party Libraries for Responsiveness**
 
 1. **react-native-responsive-screen** → `%` based width/height
 
@@ -244,15 +232,11 @@ import { scale, verticalScale } from "react-native-size-matters";
 <Text style={{ fontSize: scale(16) }}>Responsive Text</Text>;
 ```
 
----
-
-### **G. Responsive Fonts**
+**G. Responsive Fonts**
 
 - Use `react-native-responsive-fontsize` or scale manually based on screen width.
 
----
-
-### **Interview Tip**
+**Interview Tip**
 
 _"I handle different screen sizes in React Native using Flexbox layouts, percentage-based width/height, Dimensions API, SafeAreaView for notches, and scaling libraries like react-native-size-matters. I also consider platform-specific adjustments using the Platform API."_
 
