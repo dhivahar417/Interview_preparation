@@ -1,105 +1,189 @@
-## **1. useMemo Example**
-
-```jsx
-import React, { useMemo, useState } from "react";
-
-export default function App() {
-  const [count, setCount] = useState(0);
-  const expensiveValue = useMemo(() => {
-    console.log("Calculating...");
-    return count * 2;
-  }, [count]);
-
-  return (
-    <div>
-      <p>{expensiveValue}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
-    </div>
-  );
-}
-```
+## **Day 1–3 Practice List: 20 Common React / React Native Code Questions**
 
 ---
 
-## **2. useCallback Example**
-
-```jsx
-import React, { useCallback, useState } from "react";
-
-export default function App() {
-  const [count, setCount] = useState(0);
-
-  const increment = useCallback(() => {
-    setCount((prev) => prev + 1);
-  }, []);
-
-  return <button onClick={increment}>Count: {count}</button>;
-}
-```
-
----
-
-## **3. Context API Example**
-
-```jsx
-import React, { createContext, useContext, useState } from "react";
-
-const MyContext = createContext();
-
-function Child() {
-  const { value } = useContext(MyContext);
-  return <p>{value}</p>;
-}
-
-export default function App() {
-  const [value] = useState("Hello from Context");
-  return (
-    <MyContext.Provider value={{ value }}>
-      <Child />
-    </MyContext.Provider>
-  );
-}
-```
-
----
-
-## **4. Passing Props Between Components**
-
-```jsx
-function Child({ name }) {
-  return <p>{name}</p>;
-}
-
-export default function Parent() {
-  return <Child name="Dhivahar" />;
-}
-```
-
----
-
-## **5. Navigation Params (React Native)**
-
-```jsx
-// Screen1
-navigation.navigate("Screen2", { userId: 123 });
-
-// Screen2
-const { userId } = route.params;
-```
-
----
-
-## **6. Basic Submit Form**
+### **1. Basic `useState` counter**
 
 ```jsx
 import React, { useState } from "react";
 
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </>
+  );
+}
+```
+
+**Explanation:**
+`useState` manages state inside functional components. Here, clicking the button updates the state and re-renders the component.
+
+---
+
+### **2. `useEffect` for fetching data**
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+export default function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+
+  return (
+    <ul>
+      {users.map((u) => (
+        <li key={u.id}>{u.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Explanation:**
+`useEffect` runs after the first render (and when dependencies change). Empty `[]` means run once.
+
+---
+
+### **3. `useMemo` for expensive calculation**
+
+```jsx
+import React, { useState, useMemo } from "react";
+
+export default function Factorial() {
+  const [num, setNum] = useState(5);
+  const factorial = useMemo(() => {
+    console.log("Calculating...");
+    return num <= 1 ? 1 : num * (num - 1);
+  }, [num]);
+
+  return (
+    <>
+      <input
+        type="number"
+        value={num}
+        onChange={(e) => setNum(+e.target.value)}
+      />
+      <p>Factorial: {factorial}</p>
+    </>
+  );
+}
+```
+
+**Explanation:**
+`useMemo` caches results to avoid recalculating unless dependencies change.
+
+---
+
+### **4. `useCallback` for stable function reference**
+
+```jsx
+import React, { useState, useCallback } from "react";
+
+function Child({ onClick }) {
+  console.log("Child rendered");
+  return <button onClick={onClick}>Click Me</button>;
+}
+
+export default function Parent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    console.log("Clicked");
+  }, []);
+
+  return (
+    <>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <Child onClick={handleClick} />
+    </>
+  );
+}
+```
+
+**Explanation:**
+`useCallback` returns the same function instance unless dependencies change — avoids unnecessary re-renders of child components.
+
+---
+
+### **5. Context API (create + use)**
+
+```jsx
+import React, { createContext, useContext, useState } from "react";
+
+const UserContext = createContext();
+
+function Child() {
+  const user = useContext(UserContext);
+  return <p>Hello {user}</p>;
+}
+
+export default function App() {
+  const [name] = useState("Dhivahar");
+  return (
+    <UserContext.Provider value={name}>
+      <Child />
+    </UserContext.Provider>
+  );
+}
+```
+
+**Explanation:**
+`createContext` and `useContext` allow passing values without prop drilling.
+
+---
+
+### **6. Pass props between components**
+
+```jsx
+function Child({ message }) {
+  return <p>{message}</p>;
+}
+
+export default function Parent() {
+  return <Child message="Hello from Parent" />;
+}
+```
+
+**Explanation:**
+Props are passed as function arguments to child components.
+
+---
+
+### **7. Navigation param passing (React Navigation in React Native)**
+
+```jsx
+// ScreenA.js
+navigation.navigate("ScreenB", { name: "Dhivahar" });
+
+// ScreenB.js
+const { name } = route.params;
+<Text>{name}</Text>;
+```
+
+**Explanation:**
+`navigation.navigate` sends data via params, `route.params` receives it.
+
+---
+
+### **8. Controlled form with `useState`**
+
+```jsx
 export default function Form() {
   const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name);
+    alert(`Hello ${name}`);
   };
 
   return (
@@ -111,148 +195,218 @@ export default function Form() {
 }
 ```
 
+**Explanation:**
+Controlled form means input value is linked to component state.
+
 ---
 
-## **7. Controlled Component**
+### **9. List rendering with `map`**
 
 ```jsx
-<input value={text} onChange={(e) => setText(e.target.value)} />
+const items = ["Apple", "Banana", "Cherry"];
+return (
+  <ul>
+    {items.map((i, idx) => (
+      <li key={idx}>{i}</li>
+    ))}
+  </ul>
+);
 ```
+
+**Explanation:**
+`map` creates JSX for each element. Always use a unique `key`.
 
 ---
 
-## **8. Fetch API Data**
-
-```jsx
-useEffect(() => {
-  fetch("https://api.example.com/data")
-    .then((res) => res.json())
-    .then((data) => setData(data));
-}, []);
-```
-
----
-
-## **9. Axios POST Request**
-
-```jsx
-axios.post("/api/user", { name: "John" }).then((res) => console.log(res.data));
-```
-
----
-
-## **10. useEffect with Cleanup**
-
-```jsx
-useEffect(() => {
-  const interval = setInterval(() => console.log("Tick"), 1000);
-  return () => clearInterval(interval);
-}, []);
-```
-
----
-
-## **11. FlatList in React Native**
-
-```jsx
-<FlatList
-  data={[{ id: "1", name: "Item 1" }]}
-  renderItem={({ item }) => <Text>{item.name}</Text>}
-  keyExtractor={(item) => item.id}
-/>
-```
-
----
-
-## **12. Conditional Rendering**
+### **10. Conditional rendering**
 
 ```jsx
 {
-  isLoggedIn ? <p>Welcome</p> : <p>Please Login</p>;
+  isLoggedIn ? <p>Welcome</p> : <p>Please login</p>;
 }
 ```
 
+**Explanation:**
+Use ternary operators or `&&` for conditional display.
+
 ---
 
-## **13. Reusable Button Component**
+### **11. Simple `FlatList` in React Native**
 
 ```jsx
-function Button({ label, onClick }) {
-  return <button onClick={onClick}>{label}</button>;
-}
+import { FlatList, Text } from "react-native";
+
+const data = [
+  { id: "1", name: "Apple" },
+  { id: "2", name: "Banana" },
+];
+
+<FlatList
+  data={data}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => <Text>{item.name}</Text>}
+/>;
 ```
 
+**Explanation:**
+`FlatList` efficiently renders lists in React Native.
+
 ---
 
-## **14. Styling in React Native**
+### **12. Button click in React Native**
 
 ```jsx
+import { Button, Alert } from "react-native";
+<Button title="Click" onPress={() => Alert.alert("Hello!")} />;
+```
+
+**Explanation:**
+`Button`'s `onPress` is similar to `onClick` in React.
+
+---
+
+### **13. Style in React Native**
+
+```jsx
+import { StyleSheet, Text } from "react-native";
+
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: "#fff" },
+  redText: { color: "red", fontSize: 20 },
+});
+
+<Text style={styles.redText}>Hello</Text>;
+```
+
+**Explanation:**
+Styles are created using `StyleSheet.create` and passed via `style` prop.
+
+---
+
+### **14. API POST call**
+
+```jsx
+fetch("https://example.com/api", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name: "Dhivahar" }),
 });
 ```
 
+**Explanation:**
+`fetch` sends network requests. Use `POST` for sending data.
+
 ---
 
-## **15. State Lifting**
+### **15. Lifting state up**
 
 ```jsx
-function Child({ onValueChange }) {
-  return <input onChange={(e) => onValueChange(e.target.value)} />;
+function Child({ onSend }) {
+  return <button onClick={() => onSend("Hello Parent")}>Send</button>;
 }
 
 function Parent() {
-  const [val, setVal] = useState("");
-  return <Child onValueChange={setVal} />;
+  const handleReceive = (msg) => alert(msg);
+  return <Child onSend={handleReceive} />;
 }
 ```
 
----
-
-## **16. React Navigation Stack**
-
-```jsx
-const Stack = createNativeStackNavigator();
-<Stack.Navigator>
-  <Stack.Screen name="Home" component={HomeScreen} />
-</Stack.Navigator>;
-```
+**Explanation:**
+Child sends data to parent via a callback function.
 
 ---
 
-## **17. Form Validation**
+### **16. `useReducer` example**
 
 ```jsx
-if (!email.includes("@")) alert("Invalid email");
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "inc":
+      return { count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+
+export default function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+  return (
+    <>
+      <p>{state.count}</p>
+      <button onClick={() => dispatch({ type: "inc" })}>+</button>
+    </>
+  );
+}
 ```
+
+**Explanation:**
+`useReducer` is an alternative to `useState` for complex state logic.
 
 ---
 
-## **18. Map Through Array**
+### **17. AsyncStorage in React Native**
 
 ```jsx
-data.map((item) => <p key={item.id}>{item.name}</p>);
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+await AsyncStorage.setItem("name", "Dhivahar");
+const name = await AsyncStorage.getItem("name");
 ```
+
+**Explanation:**
+AsyncStorage stores data locally on the device.
 
 ---
 
-## **19. useReducer Example**
+### **18. Simple custom hook**
 
 ```jsx
-const reducer = (state, action) => {
-  if (action.type === "increment") return state + 1;
-  return state;
-};
-const [count, dispatch] = useReducer(reducer, 0);
+function useCounter() {
+  const [count, setCount] = useState(0);
+  const inc = () => setCount((c) => c + 1);
+  return { count, inc };
+}
+
+function App() {
+  const { count, inc } = useCounter();
+  return <button onClick={inc}>{count}</button>;
+}
 ```
+
+**Explanation:**
+Custom hooks encapsulate reusable logic.
 
 ---
 
-## **20. LocalStorage Save & Load**
+### **19. Debouncing input**
 
 ```jsx
-localStorage.setItem("name", "Dhivahar");
-const name = localStorage.getItem("name");
+useEffect(() => {
+  const timer = setTimeout(() => console.log(value), 500);
+  return () => clearTimeout(timer);
+}, [value]);
 ```
+
+**Explanation:**
+Delays execution until user stops typing.
+
+---
+
+### **20. Simple modal in React Native**
+
+```jsx
+import { Modal, View, Text, Button } from "react-native";
+
+<Modal visible={show} animationType="slide">
+  <View>
+    <Text>Hello Modal</Text>
+    <Button title="Close" onPress={() => setShow(false)} />
+  </View>
+</Modal>;
+```
+
+**Explanation:**
+`Modal` shows content over other UI.
 
 ---
