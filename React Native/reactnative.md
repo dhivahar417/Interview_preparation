@@ -264,6 +264,102 @@ const linking = {
 
 ---
 
+31. What are the threads available in React Native?\*\*
+
+React Native runs on multiple threads for performance:
+
+| Thread                       | Purpose                                                               | Example Work                                        |
+| ---------------------------- | --------------------------------------------------------------------- | --------------------------------------------------- |
+| **Main Thread (UI Thread)**  | Handles all native UI rendering and user interactions.                | Drawing components, animations.                     |
+| **JavaScript Thread**        | Executes all your JS/React code.                                      | Component logic, state updates.                     |
+| **Shadow Thread**            | Layout calculations using Yoga layout engine.                         | Flexbox layout computation before UI update.        |
+| **Native Modules Thread(s)** | Background threads for heavy native tasks (network, file operations). | Fetching data from API, reading from local storage. |
+
+🔹 **Tip for interview**:
+If asked “why multiple threads?” → Say: _It separates UI rendering from JS logic, ensuring smooth animations even if JS thread is busy._
+
+---
+
+32. What is Prop Drilling?\*\*
+
+**Definition:**
+Prop drilling happens when you pass data through multiple nested components that don't directly need it, just so a deeply nested component can use it.
+
+**Example:**
+
+```jsx
+function App() {
+  const user = { name: "John" };
+  return <Parent user={user} />;
+}
+
+function Parent({ user }) {
+  return <Child user={user} />;
+}
+
+function Child({ user }) {
+  return <GrandChild user={user} />;
+}
+
+function GrandChild({ user }) {
+  return <p>{user.name}</p>; // We finally use it here
+}
+```
+
+Here, `user` is passed through `Parent` and `Child` even though they don't use it.
+
+**Solution:** Use **Context API** to avoid prop drilling.
+
+---
+
+33. What is a React Native Bridge?\*\*
+
+**Definition:**
+React Native Bridge is the communication layer between **JavaScript** and **Native code** (Java/Kotlin for Android, Objective-C/Swift for iOS).
+
+**How it works:**
+
+- JS sends a message to Native via the bridge.
+- Native executes platform-specific code.
+- Native sends the result back via the bridge.
+
+**Example use case:**
+
+- Accessing camera
+- Using native SDKs not available in JS
+
+**Simple analogy:**
+Think of the bridge like a translator between two people speaking different languages (JS ↔ Native).
+
+---
+
+34. What is State in React/React Native?\*\*
+
+**Definition:**
+State is a built-in object that stores **dynamic data** in a component, and triggers a re-render when it changes.
+
+**Example:**
+
+```jsx
+import React, { useState } from "react";
+import { View, Button, Text } from "react-native";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <View>
+      <Text>Count: {count}</Text>
+      <Button title="Increase" onPress={() => setCount(count + 1)} />
+    </View>
+  );
+}
+```
+
+Here, `count` is **state** — when it changes, the UI automatically updates.
+
+---
+
 ### Bonus: 60-second “architect answer” template
 
 “When building for 40k+ users, I focus on **modular architecture** (feature folders), **Zustand/RTK** for predictable state, **React Query** (or custom) for caching/sync, **Reanimated** for 60fps UI, and **EAS** for multi-env builds with **OTA** for safe JS updates (guarded by runtimeVersion). I add **Flipper + Sentry** for observability, **feature flags** for safe rollout, and design **offline-first** with a background sync queue. For performance, I trim the critical path, enable **Hermes**, code-split routes, and profile with Flipper/Instruments.”

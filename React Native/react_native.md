@@ -147,13 +147,114 @@ Components are reusable pieces of UI that can be composed together. In React Nat
 
 ### 13. **How do you handle different screen sizes and pixel densities?**
 
-**Answer:**
+## **1. Why handling screen sizes matters**
 
-- Use **Dimensions API** to get screen dimensions
-- Implement responsive design with **react-native-responsive-dimensions**
-- Use **PixelRatio** for device-specific scaling
-- Create adaptive layouts with flexbox and percentage-based dimensions
-- Test on various device sizes and orientations
+- Mobile devices have **different resolutions, screen dimensions, and pixel densities**.
+- Hardcoding sizes can make your app look **broken or clipped** on some devices.
+- Goal: **responsive and adaptive UI** across phones and tablets.
+
+---
+
+## **2. Techniques to handle different screen sizes**
+
+### **A. Flexbox Layout**
+
+- React Native uses Flexbox by default for layout.
+- Use `flex`, `justifyContent`, `alignItems` to adapt to different screen sizes.
+
+```jsx
+<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  <Text>Hello</Text>
+</View>
+```
+
+---
+
+### **B. Percentage-based Width / Height**
+
+- Avoid fixed pixel sizes; use percentages instead.
+
+```jsx
+<View style={{ width: "80%", height: "50%" }} />
+```
+
+---
+
+### **C. Dimensions API**
+
+- Get device width and height dynamically.
+
+```jsx
+import { Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+console.log("Screen width:", width, "Height:", height);
+```
+
+- Can adjust component sizes based on `width` and `height`.
+
+---
+
+### **D. Platform-Specific Styles**
+
+- Use `Platform` API for iOS vs Android adjustments.
+
+```jsx
+import { Platform, StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    padding: Platform.OS === "ios" ? 20 : 10,
+  },
+});
+```
+
+---
+
+### **E. SafeAreaView**
+
+- Handles devices with **notches or rounded corners**.
+
+```jsx
+import { SafeAreaView } from "react-native";
+
+<SafeAreaView style={{ flex: 1 }}>
+  <Text>Hello Safe Area</Text>
+</SafeAreaView>;
+```
+
+---
+
+### **F. Third-Party Libraries for Responsiveness**
+
+1. **react-native-responsive-screen** → `%` based width/height
+
+```jsx
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+<View style={{ width: wp("80%"), height: hp("30%") }} />;
+```
+
+2. **react-native-size-matters** → scale sizes proportionally
+
+```jsx
+import { scale, verticalScale } from "react-native-size-matters";
+<Text style={{ fontSize: scale(16) }}>Responsive Text</Text>;
+```
+
+---
+
+### **G. Responsive Fonts**
+
+- Use `react-native-responsive-fontsize` or scale manually based on screen width.
+
+---
+
+### **Interview Tip**
+
+_"I handle different screen sizes in React Native using Flexbox layouts, percentage-based width/height, Dimensions API, SafeAreaView for notches, and scaling libraries like react-native-size-matters. I also consider platform-specific adjustments using the Platform API."_
 
 ---
 
@@ -305,37 +406,179 @@ Components are reusable pieces of UI that can be composed together. In React Nat
 
 ### 26. **What are memory leaks and how do you avoid them?**
 
-**Answer:**
+**Definition:**
+A **memory leak** happens when your app **keeps using memory for things it no longer needs**, but the memory is not released. Over time, this can make the app slow or crash.
 
-- **Memory leaks** occur when objects are not properly garbage collected
-- **Common causes:** Unsubscribed listeners, uncleared timers, navigation state issues
-- **Prevention:** Clean up in useEffect cleanup function, unsubscribe from events
-- **Tools:** Use Flipper or React Native Debugger to monitor memory usage
-- **Best practices:** Avoid global variables, clear intervals, remove event listeners
+**Example in React Native:**
+
+- Keeping timers (`setInterval`, `setTimeout`) running even after a component is unmounted.
+- Subscribing to events (like network listeners) and **not removing them**.
+- Holding references to large objects in state unnecessarily.
+
+```jsx
+import { useEffect } from "react";
+
+useEffect(() => {
+  const interval = setInterval(() => console.log("tick"), 1000);
+  // ❌ Memory leak if not cleared on unmount
+}, []);
+```
+
+---
+
+## **How to Avoid Memory Leaks**
+
+1. **Clean up timers and intervals**
+
+```jsx
+useEffect(() => {
+  const interval = setInterval(() => console.log("tick"), 1000);
+  return () => clearInterval(interval); // ✅ clean up
+}, []);
+```
+
+2. **Unsubscribe from event listeners**
+
+```jsx
+useEffect(() => {
+  const subscription = someEvent.addListener(() => {});
+  return () => subscription.remove(); // ✅ clean up
+}, []);
+```
+
+3. **Cancel network requests on unmount**
+
+- Use `AbortController` or cancellation tokens with Axios/fetch.
+
+4. **Avoid storing unnecessary data in state**
+
+- Only store what’s needed for rendering.
+
+5. **Use weak references or cleanup heavy objects** if possible.
+
+---
+
+**Interview Tip:**
+You can answer like this:
+_"Memory leaks happen when memory is used but never released. In React Native, this often happens with timers, event listeners, or network calls. To avoid them, always clean up in `useEffect` return function and cancel unnecessary operations on unmount."_
 
 ---
 
 ### 27. **How do you handle deep linking in React Native?**
 
-**Answer:**
+**Definition:**
+Deep linking allows your app to **open a specific screen directly** from a URL or another app, instead of just launching the app’s home screen.
 
-- Configure **URL schemes** in iOS and **intent filters** in Android
-- Use **react-navigation** linking configuration
-- Handle incoming links with **Linking API**
-- Implement **universal links** for iOS
-- Test deep linking on both platforms thoroughly
+**Example use cases:**
+
+- Opening a product page in an e-commerce app from a web link.
+- Opening a chat screen from a notification.
+
+---
+
+## **How to Handle Deep Linking**
+
+### **1. Using React Navigation**
+
+React Navigation has built-in support for deep linking.
+
+```jsx
+import * as Linking from "expo-linking";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
+
+// Define your deep link configuration
+const linking = {
+  prefixes: [Linking.makeUrl("/")],
+  config: {
+    screens: {
+      Home: "home",
+      Profile: "profile/:userId", // dynamic param
+    },
+  },
+};
+
+export default function App() {
+  return (
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+### **2. Handling incoming URLs**
+
+```jsx
+useEffect(() => {
+  const handleUrl = ({ url }) => {
+    console.log("Opened via URL:", url);
+  };
+
+  Linking.addEventListener("url", handleUrl);
+  return () => Linking.removeEventListener("url", handleUrl);
+}, []);
+```
+
+**Explanation:**
+
+- `prefixes` → URLs your app should respond to.
+- `config` → Maps URL paths to screens.
+- Dynamic params (`:userId`) can be passed to the screen.
+- Use `Linking.addEventListener('url', ...)` for custom handling.
+
+---
+
+### **3. Example URL**
+
+```
+myapp://profile/123
+```
+
+- Opens the **ProfileScreen** with `userId = 123`.
+
+---
+
+**Interview Tip:**
+You can answer like this:
+_"Deep linking lets you open a specific screen via URL. In React Native, we use `Linking` API and React Navigation’s linking config to map URLs to screens. Dynamic params can be passed through the URL to the screen."_
 
 ---
 
 ### 28. **Explain gesture handling and animations using react-native-reanimated**
 
-**Answer:**
+**Definition:**
+`react-native-reanimated` is a **high-performance animation library** for React Native that runs animations **on the UI thread**, instead of the JS thread, which keeps animations smooth and responsive even under heavy JS load.
 
-- **react-native-reanimated** provides 60fps animations on the UI thread
-- **Gesture handling** with PanGestureHandler, PinchGestureHandler
-- **Shared element transitions** between screens
-- **Layout animations** for smooth UI changes
-- **Worklet functions** run on UI thread for better performance
+**Why use it:**
+
+- Smooth animations (60fps)
+- Works well with gestures
+- Runs animations on the native side → no lag
+
+---
+
+## **2. Gesture Handling**
+
+**Definition:**
+Gesture handling lets you detect **touch events** like swipe, drag, pinch, or tap and respond with animations.
+
+**Common library:**
+
+- `react-native-gesture-handler` is often used alongside Reanimated for gestures.
+
+---
+
+### **Interview Tip:**
+
+You can explain like this:
+
+_"react-native-reanimated lets us run animations on the UI thread for smooth performance. We combine it with gesture-handler to detect touches like drag or swipe. Shared values store animation states, and animated styles bind these values to the UI. WithSpring, WithTiming, and WithDecay provide smooth motion effects."_
 
 ---
 
