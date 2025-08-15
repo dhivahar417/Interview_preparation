@@ -96,6 +96,8 @@
 - React.memo for performance-critical components
 - Optimized re-renders with proper state management
 - Efficient list rendering
+- **Causes include unnecessary re-renders, large bundle size, heavy JS computations, and poor image handling.**
+  "I optimize React Native performance by reducing unnecessary re-renders with React.memo, useCallback, and useMemo, optimizing list rendering with FlatList properties, using fast-image for image caching, minimizing JS–Native bridge calls, enabling Hermes, and lazy loading heavy components. I also use profiling tools like Flipper and React DevTools to identify bottlenecks."
 
 ### **Responsive Design**
 
