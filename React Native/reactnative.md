@@ -363,3 +363,9 @@ Here, `count` is **state** — when it changes, the UI automatically updates.
 ### Bonus: 60-second “architect answer” template
 
 “When building for 40k+ users, I focus on **modular architecture** (feature folders), **Zustand/RTK** for predictable state, **React Query** (or custom) for caching/sync, **Reanimated** for 60fps UI, and **EAS** for multi-env builds with **OTA** for safe JS updates (guarded by runtimeVersion). I add **Flipper + Sentry** for observability, **feature flags** for safe rollout, and design **offline-first** with a background sync queue. For performance, I trim the critical path, enable **Hermes**, code-split routes, and profile with Flipper/Instruments.”
+
+## 35: What is the Event Loop in React Native?
+
+👉 “In React Native, the event loop is the mechanism inside the JavaScript thread that allows asynchronous tasks to be handled without blocking the app. Since JavaScript is single-threaded, it can only run one task at a time. The event loop ensures that synchronous code runs first, and then asynchronous tasks like timers, API calls, or UI updates are picked up from the queue and executed when the thread is free.”
+
+---
